@@ -10,22 +10,10 @@ This program will automatically update your CloudFlare DNS records with the IP a
 
 
 ## Installation
-1. Clone the repository
-```
-git clone
-```
-2. Install the requirements
-```
-pip install -r requirements.txt
-```
-3. Create a config file
-```
-cp config.yml.example config.yml
-```
-4. Fill in the config file
-```
-vim config.yml
-```
+1. Clone the repository `git clone`
+2. Install the requirements `pip3 install -r requirements.txt`
+3. Create a config file `cp config.yml.example config.yml`
+4. Fill in the config file with your CloudFlare API key and domain name
 5. Done, Set the program as a service or cron job
 
 
