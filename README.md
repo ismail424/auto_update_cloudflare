@@ -3,7 +3,6 @@ This program will automatically update your CloudFlare DNS records with the IP a
 
 ## Requirements
 - Python 3.6+
-- pip
 - requests
 - pyyaml
 - cloudflare
