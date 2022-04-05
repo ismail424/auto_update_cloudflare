@@ -1,4 +1,4 @@
 cloudflare:
-  hostnames: [""]
-  email: ""
-  global-api-key: ""
+  hostnames: ["sacic.dev"]
+  email: "cicas03@hotmail.com"
+  global-api-key: "489a0163cd031e4a06fd727b779d54e943c8d"
