@@ -1,0 +1,4 @@
+cloudflare:
+  hostnames: [""]
+  email: ""
+  global-api-key: ""
