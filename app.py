@@ -3,7 +3,7 @@ from requests import get
 import yaml
 from datetime import datetime
 from time import time, sleep
-
+import os
 # Import Config
 config = yaml.safe_load(open("config.yml"))
 
@@ -69,8 +69,9 @@ def main():
         with open("config.yml", "w") as f:
             yaml.dump(config, f)
         update_dns()
+        os.system('echo "nameserver 1.0.0.1" >> /etc/resolv.conf')
+        os.system('echo "nameserver 1.1.1.1" >> /etc/resolv.conf')
+        os.system('echo "nameserver 8.8.8.8" >> /etc/resolv.conf')
 
-
-        
 if __name__ == '__main__':
     main()
