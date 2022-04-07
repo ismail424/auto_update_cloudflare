@@ -61,27 +61,14 @@ def update_dns():
     print("DNS updated")
     
 def main():
-    print("Starting...")
-    print("Logging in to Cloudflare")
-    try:
-        CloudFlare.CloudFlare(
-            email=config['cloudflare']['email'],
-            token=config['cloudflare']['global-api-key']
-        )
-    except:
-        save_logs("Could not initialize Cloudflare API client")
-        raise Exception("Could not initialize Cloudflare API client")
-    print("Logged in to Cloudflare successfully")
-    while True:
-        sleep(60 - time() % 60)
-        current_ip = get_current_ip()
-        if current_ip != config['cloudflare']['current-ip']:
-            print("Updating DNS...")
-            print(f"Current IP: {config['cloudflare']['current-ip']} changed to {current_ip}") 
-            config['cloudflare']['current-ip'] = current_ip
-            with open("config.yml", "w") as f:
-                yaml.dump(config, f)
-            update_dns()
+    current_ip = get_current_ip()
+    if current_ip != config['cloudflare']['current-ip']:
+        print("Updating DNS...")
+        print(f"Current IP: {config['cloudflare']['current-ip']} changed to {current_ip}") 
+        config['cloudflare']['current-ip'] = current_ip
+        with open("config.yml", "w") as f:
+            yaml.dump(config, f)
+        update_dns()
 
 
         
