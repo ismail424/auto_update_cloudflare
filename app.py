@@ -1,8 +1,7 @@
 import CloudFlare
-import yaml
 from requests import get
+import yaml
 from datetime import datetime
-import socket
 
 # Import Config
 config = yaml.safe_load(open("config.yml"))
@@ -30,11 +29,7 @@ def get_zone_id(hostname: str, cf):
     
 def get_current_ip():
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        ip = str(s.getsockname()[0])
-        s.close()
-        return ip
+        return get('https://api.ipify.org').content.decode('utf8')
     except:
         save_logs("Could not get current IP")
         exit(2)
@@ -55,7 +50,7 @@ def update_dns():
         zone_id = get_zone_id(hostname, cf)
         if zone_id:
             try:
-                ip = get('https://api.ipify.org').content.decode('utf8')
+                ip = get_current_ip()
                 a_record = cf.zones.dns_records.get(zone_id, params={"name": hostname, "type": "A"})[0]
                 a_record["content"] = str(ip)
                 cf.zones.dns_records.put(zone_id, a_record["id"], data=a_record)
