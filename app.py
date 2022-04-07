@@ -1,7 +1,8 @@
 import CloudFlare
-from requests import get
 import yaml
+from requests import get
 from datetime import datetime
+import socket
 
 # Import Config
 config = yaml.safe_load(open("config.yml"))
@@ -29,7 +30,11 @@ def get_zone_id(hostname: str, cf):
     
 def get_current_ip():
     try:
-        return get('https://api.ipify.org').content.decode('utf8')
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = str(s.getsockname()[0])
+        s.close()
+        return ip
     except:
         save_logs("Could not get current IP")
         exit(2)
