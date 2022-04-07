@@ -2,8 +2,7 @@ import CloudFlare
 from requests import get
 import yaml
 from datetime import datetime
-from time import time, sleep
-import os
+
 # Import Config
 config = yaml.safe_load(open("config.yml"))
 
@@ -63,15 +62,15 @@ def update_dns():
 def main():
     current_ip = get_current_ip()
     if current_ip != config['cloudflare']['current-ip']:
-        print("Updating DNS...")
-        print(f"Current IP: {config['cloudflare']['current-ip']} changed to {current_ip}") 
+        print(f"Changing from {config['cloudflare']['current-ip']} to new ip adrress{current_ip}") 
         config['cloudflare']['current-ip'] = current_ip
         with open("config.yml", "w") as f:
             yaml.dump(config, f)
         update_dns()
-        os.system('echo "nameserver 1.0.0.1" >> /etc/resolv.conf')
-        os.system('echo "nameserver 1.1.1.1" >> /etc/resolv.conf')
-        os.system('echo "nameserver 8.8.8.8" >> /etc/resolv.conf')
+        nameservers = {"1.0.0.1", "1.1.1.1", "8.8.8.8"}
+        with open("test.txt", "a") as f:
+            [f.write(f"\nnameserver {nameserver}") for nameserver in nameservers]
+            
 
 if __name__ == '__main__':
     main()
