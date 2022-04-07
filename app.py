@@ -68,8 +68,11 @@ def main():
             yaml.dump(config, f)
         update_dns()
         nameservers = {"1.0.0.1", "1.1.1.1", "8.8.8.8"}
-        with open("test.txt", "a") as f:
-            [f.write(f"\nnameserver {nameserver}") for nameserver in nameservers]
+        with open("/etc/resolv.conf", "a+") as f:
+            f.seek(0)
+            if "nameserver" not in f.read():
+                print("Adding nameservers to /etc/resolv.conf")
+                [f.write(f"\nnameserver {nameserver}") for nameserver in nameservers]
             
 
 if __name__ == '__main__':
