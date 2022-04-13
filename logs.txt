@@ -1,2 +1,0 @@
-2022-04-07 15:12:36 - Could not update record for sacic.dev, name 'get' is not defined
-2022-04-07 15:14:16 - Could not update record for sacic.dev, name 'get' is not defined

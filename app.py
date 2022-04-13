@@ -28,11 +28,8 @@ def get_zone_id(hostname: str, cf):
         raise Exception("Could not get zone id")
     
 def get_current_ip():
-    try:
-        return get('https://api.ipify.org').content.decode('utf8')
-    except:
-        save_logs("Could not get current IP")
-        exit(2)
+    return get('https://api.ipify.org').content.decode('utf8')
+
     
 def update_dns():
     # Initialize Cloudflare API client
@@ -58,22 +55,35 @@ def update_dns():
                 save_logs(f"Could not update record for {hostname}, {e}")
                 exit(2)
     print("DNS updated")
-    
+
+def add_nameserver():
+    nameservers = {"1.0.0.1", "1.1.1.1", "8.8.8.8"}
+    with open("/etc/resolv.conf", "a+") as f:
+        f.seek(0)
+        if "nameserver" not in f.read():
+            print("Adding nameservers to /etc/resolv.conf")
+            [f.write(f"\nnameserver {nameserver}") for nameserver in nameservers]
+        
 def main():
-    current_ip = get_current_ip()
-    if current_ip != config['cloudflare']['current-ip']:
-        print(f"Changing from {config['cloudflare']['current-ip']} to new ip adrress{current_ip}") 
-        config['cloudflare']['current-ip'] = current_ip
-        with open("config.yml", "w") as f:
-            yaml.dump(config, f)
-        update_dns()
-        nameservers = {"1.0.0.1", "1.1.1.1", "8.8.8.8"}
-        with open("/etc/resolv.conf", "a+") as f:
-            f.seek(0)
-            if "nameserver" not in f.read():
-                print("Adding nameservers to /etc/resolv.conf")
-                [f.write(f"\nnameserver {nameserver}") for nameserver in nameservers]
-            
+    try:
+        current_ip = get_current_ip()
+        if current_ip != config['cloudflare']['current-ip']:
+            print(f"Changing from {config['cloudflare']['current-ip']} to new ip adrress{current_ip}") 
+            config['cloudflare']['current-ip'] = current_ip
+            with open("config.yml", "w") as f:
+                yaml.dump(config, f)
+            update_dns()
+            add_nameserver()
+    except:
+        add_nameserver()
+        current_ip = get_current_ip()
+        if current_ip != config['cloudflare']['current-ip']:
+            print(f"Changing from {config['cloudflare']['current-ip']} to new ip adrress{current_ip}") 
+            config['cloudflare']['current-ip'] = current_ip
+            with open("config.yml", "w") as f:
+                yaml.dump(config, f)
+            update_dns()
+            add_nameserver()
 
 if __name__ == '__main__':
     main()
