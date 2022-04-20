@@ -2,9 +2,11 @@ import CloudFlare
 from requests import get
 import yaml
 from datetime import datetime
+import os
 
 # Import Config
-config = yaml.safe_load(open("config.yml"))
+config_src = str(os.getcwd()) + "/config.yml"
+config = yaml.safe_load(open(config_src))
 
 
 # Save error to log
