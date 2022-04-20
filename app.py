@@ -63,7 +63,7 @@ def add_nameserver():
     with open("/etc/resolv.conf", "a+") as f:
         f.seek(0)
         for nameserver in nameservers:
-            if f"nameserver {nameserver}" not in f.read():
+            if f.read().find(nameserver) == -1:
                 print("Adding nameservers to /etc/resolv.conf")
                 f.write(f"nameserver {nameserver}\n")
         
