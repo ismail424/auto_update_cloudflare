@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 
 # Import Config
-config_src = str(os.getcwd()) + "/config.yml"
+config_src = os.path.abspath(os.path.join(os.path.dirname(__file__), "config.yml"))
 config = yaml.safe_load(open(config_src))
 
 
