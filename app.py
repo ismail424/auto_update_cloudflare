@@ -59,12 +59,12 @@ def update_dns():
     print("DNS updated")
 
 def add_nameserver():
-    nameservers = ["1.0.0.1", "1.1.1.1", "8.8.8.8"]
+    nameservers = ["1.0.0.1", "1.1.1.1", "8.8.8.8", "8.4.4.8"]
     with open("/etc/resolv.conf", "a+") as f:
         f.seek(0)
         for nameserver in nameservers:
-            print("Adding nameservers to /etc/resolv.conf")
             if f"nameserver {nameserver}" not in f.read():
+                print("Adding nameservers to /etc/resolv.conf")
                 f.write(f"nameserver {nameserver}\n")
         
   
