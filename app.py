@@ -3,6 +3,7 @@ from requests import get
 import yaml
 from datetime import datetime
 import os
+import socket
 
 # Import Config
 config_src = os.path.abspath(os.path.join(os.path.dirname(__file__), "config.yml"))
@@ -30,7 +31,14 @@ def get_zone_id(hostname: str, cf):
         raise Exception("Could not get zone id")
     
 def get_current_ip():
-    return get('https://api.ipify.org').content.decode('utf8')
+    website_ip = get("https://api.ipify.org").text
+    
+    local_hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(local_hostname)
+    if local_ip != "127.0.1.1" or local_ip != "0.0.0.0":
+        return local_ip
+    
+    return website_ip
 
     
 def update_dns():
