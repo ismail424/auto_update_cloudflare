@@ -32,12 +32,6 @@ def get_zone_id(hostname: str, cf):
     
 def get_current_ip():
     website_ip = get("https://api.ipify.org").text
-    
-    local_hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(local_hostname)
-    if local_ip != "127.0.1.1" or local_ip != "0.0.0.0":
-        return local_ip
-    
     return website_ip
 
     
