@@ -31,11 +31,7 @@ def get_zone_id(hostname: str, cf):
         raise Exception("Could not get zone id")
     
 def get_current_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    eno1_ip = s.getsockname()[0]
-    s.close()
-    return eno1_ip
+    return get("https://api.ipify.org").text
 
 def update_dns():
     # Initialize Cloudflare API client
